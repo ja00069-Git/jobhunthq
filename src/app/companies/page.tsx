@@ -63,9 +63,9 @@ export default async function CompaniesPage() {
       </div>
 
       {companies.length === 0 ? (
-        <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-10 text-center shadow-sm">
-          <p className="text-lg font-semibold text-slate-900">No companies yet</p>
-          <p className="mt-2 text-sm text-slate-500">
+        <div className="ui-surface-card border-dashed p-10 text-center">
+          <p className="text-lg font-semibold text-slate-900 dark:text-slate-100">No companies yet</p>
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
             Companies appear automatically when you add an application or save a job email.
           </p>
         </div>
@@ -74,12 +74,12 @@ export default async function CompaniesPage() {
           {companies.map((company) => (
             <article
               key={company.id}
-              className="rounded-[26px] border border-slate-200/80 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:p-5"
+              className="ui-surface-card p-4 transition hover:-translate-y-0.5 hover:shadow-md sm:p-5"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h2 className="text-xl font-semibold text-slate-900">{company.name}</h2>
-                  <p className="mt-1 text-sm text-slate-500">
+                  <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">{company.name}</h2>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     {company._count.applications} job{company._count.applications === 1 ? "" : "s"} saved
                   </p>
                 </div>
@@ -89,28 +89,28 @@ export default async function CompaniesPage() {
                 </span>
               </div>
 
-              <p className="mt-2 text-sm text-slate-500">
+              <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
                 You have {company._count.applications} application{company._count.applications === 1 ? "" : "s"} saved for this company.
               </p>
 
               <div className="mt-4 space-y-2">
                 {company.applications.length === 0 ? (
-                  <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-4 text-sm text-slate-500">
+                  <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50/80 p-4 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-400">
                     No applications added yet.
                   </div>
                 ) : (
                   company.applications.map((application) => (
                     <div
                       key={application.id}
-                      className="rounded-2xl border border-slate-200 bg-slate-50 p-3"
+                      className="rounded-2xl border border-slate-200 bg-slate-50/80 p-3 dark:border-slate-700 dark:bg-slate-800/70"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-sm font-semibold text-slate-900">{application.role}</p>
-                          <p className="mt-1 text-xs text-slate-500">
+                          <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{application.role}</p>
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                             {application.dateApplied.toLocaleDateString()}
                           </p>
-                          <p className="mt-1 text-xs text-slate-500">
+                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                             Resume used: {application.resume?.name ?? "Not assigned"}
                           </p>
                         </div>

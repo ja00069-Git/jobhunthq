@@ -184,7 +184,7 @@ function KanbanSkeleton() {
         {KANBAN_COLUMNS.map((option) => (
           <section
             key={option.value}
-            className="flex min-h-[300px] flex-col rounded-[22px] border border-slate-200 bg-slate-50/70 p-2.5"
+            className="flex min-h-[300px] flex-col rounded-[22px] border border-slate-200 bg-slate-50/70 p-2.5 dark:border-slate-800 dark:bg-slate-900/60"
           >
             <div className="mb-3 flex items-center justify-between gap-2">
               <div className={`rounded-full px-3 py-1 text-sm font-semibold ${option.color}`}>
@@ -195,7 +195,7 @@ function KanbanSkeleton() {
               </span>
             </div>
             <div className="space-y-2">
-              <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+              <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-900/80">
                 <div className="h-4 w-24 rounded bg-slate-200" />
                 <div className="mt-2 h-3 w-16 rounded bg-slate-100" />
               </div>
@@ -234,8 +234,8 @@ function Column({
       ref={setNodeRef}
       className={`flex min-h-[300px] flex-col rounded-[22px] border p-2.5 transition ${
         isOver
-          ? "border-blue-300 bg-blue-50/80"
-          : "border-slate-200 bg-slate-50/70"
+          ? "border-blue-300 bg-blue-50/80 dark:border-blue-700 dark:bg-blue-950/30"
+          : "border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-900/60"
       }`}
     >
       <div className="mb-3 flex items-center justify-between gap-2">
@@ -260,7 +260,7 @@ function Column({
             />
           ))
         ) : (
-          <div className="rounded-xl border border-dashed border-slate-200 bg-white/70 p-3 text-sm text-slate-400">
+          <div className="rounded-xl border border-dashed border-slate-200 bg-white/70 p-3 text-sm text-slate-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-500">
             Move an application here.
           </div>
         )}
@@ -305,7 +305,7 @@ function StaticCard({
   onResumeChange: (id: string, resumeId: string) => Promise<void>;
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/80">
       <CardContent app={app} resumes={resumes} onResumeChange={onResumeChange} />
     </div>
   );
@@ -337,7 +337,7 @@ function InteractiveCard({
       {...listeners}
       {...attributes}
       style={style}
-      className={`rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+      className={`rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/80 ${
         isDragging ? "cursor-grabbing opacity-80 shadow-lg" : "cursor-grab"
       }`}
     >
@@ -357,28 +357,27 @@ function CardContent({
 }) {
   return (
     <>
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
-          <p className="line-clamp-2 text-sm font-semibold text-slate-900">{app.role}</p>
-          <p className="mt-1 text-sm text-slate-600">{app.company}</p>
-        </div>
-
+      <div className="min-w-0 space-y-1">
+        <p className="line-clamp-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+          {app.role}
+        </p>
+        <p className="text-sm text-slate-600 dark:text-slate-300">{app.company}</p>
         {app.source ? (
-          <span className="ui-badge-neutral shrink-0">
+          <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
             {app.source}
-          </span>
+          </p>
         ) : null}
       </div>
 
       <div className="mt-2.5" onPointerDownCapture={(event) => event.stopPropagation()}>
         <label className="block">
-          <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+          <span className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
             Resume used
           </span>
           <select
             value={app.resumeId ?? ""}
             onChange={(event) => void onResumeChange(app.id, event.target.value)}
-            className="w-full rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-2 text-xs text-slate-700 outline-none transition focus:border-blue-500 focus:bg-white"
+            className="ui-input px-2.5 py-2 text-xs"
           >
             <option value="">No resume selected</option>
             {resumes.map((resume) => (

@@ -122,23 +122,23 @@ export default function ResumeManager({
     <div className="grid gap-5 xl:grid-cols-[360px_minmax(0,1fr)]">
       <form
         onSubmit={handleSubmit}
-        className="rounded-[26px] border border-slate-200/80 bg-white p-5 shadow-sm xl:sticky xl:top-6"
+        className="ui-surface-card p-5 xl:sticky xl:top-6"
       >
-        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-600">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-600 dark:text-blue-300">
           Resumes
         </p>
-        <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+        <h2 className="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-100">
           Add a resume
         </h2>
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
           Save a name and a file link so you can reuse the right resume later.
         </p>
 
         <div className="mt-6 space-y-4">
           <label className="block space-y-1.5">
-            <span className="text-sm font-medium text-slate-700">Name</span>
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Name</span>
             <input
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-100"
+              className="ui-input"
               placeholder="Marketing resume"
               value={name}
               onChange={(event) => setName(event.target.value)}
@@ -147,10 +147,10 @@ export default function ResumeManager({
           </label>
 
           <label className="block space-y-1.5">
-            <span className="text-sm font-medium text-slate-700">Link to file</span>
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Link to file</span>
             <input
               type="url"
-              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 transition focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-blue-100"
+              className="ui-input"
               placeholder="https://drive.google.com/..."
               value={fileUrl}
               onChange={(event) => setFileUrl(event.target.value)}
@@ -181,13 +181,13 @@ export default function ResumeManager({
         </button>
       </form>
 
-      <section className="rounded-[26px] border border-slate-200/80 bg-white p-5 shadow-sm">
+      <section className="ui-surface-card p-5">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
               Saved resumes
             </p>
-            <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+            <h2 className="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-100">
               Your resumes
             </h2>
           </div>
@@ -197,7 +197,7 @@ export default function ResumeManager({
         </div>
 
         {resumes.length === 0 ? (
-          <div className="mt-5 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-6 text-sm text-slate-500">
+          <div className="mt-5 rounded-2xl border border-dashed border-slate-200 bg-slate-50/80 p-6 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-400">
             No resumes saved yet.
           </div>
         ) : (
@@ -205,16 +205,16 @@ export default function ResumeManager({
             {resumes.map((resume) => (
               <article
                 key={resume.id}
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm"
+                className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/70 dark:hover:bg-slate-800"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <div className="inline-flex items-center gap-2 text-sm font-semibold text-slate-900">
-                      <FiFileText className="h-4 w-4 text-slate-500" />
+                    <div className="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+                      <FiFileText className="h-4 w-4 text-slate-500 dark:text-slate-400" />
                       <span>{resume.name}</span>
                     </div>
                     <div className="mt-1 flex flex-wrap items-center gap-2">
-                      <span className="text-xs text-slate-500">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">
                         Added {formatResumeDate(resume.createdAt)}
                       </span>
                       <span className="ui-badge-soft">

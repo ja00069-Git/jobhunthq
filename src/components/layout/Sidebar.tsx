@@ -28,11 +28,11 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`sticky top-0 hidden h-screen shrink-0 border-r border-slate-200/80 bg-white/75 p-3 backdrop-blur-xl transition-all duration-200 lg:flex lg:flex-col ${
+      className={`sticky top-0 hidden h-screen shrink-0 border-r border-slate-200/70 bg-white/55 p-3 backdrop-blur-xl transition-all duration-200 dark:border-slate-800/80 dark:bg-slate-950/45 lg:flex lg:flex-col ${
         collapsed ? "w-20" : "w-64"
       }`}
     >
-      <div className="mb-4 rounded-2xl border border-slate-200/80 bg-white/80 p-2.5 shadow-sm">
+      <div className="mb-4 rounded-2xl border border-slate-200/80 bg-white/80 p-2.5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/80">
         <div
           className={`flex gap-2 ${
             collapsed ? "justify-center" : "items-center justify-between"
@@ -40,12 +40,12 @@ export default function Sidebar() {
         >
           {!collapsed ? (
             <div className="flex items-center gap-3 overflow-hidden">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-sm font-bold text-white shadow-sm ring-4 ring-blue-100/70">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-sm font-bold text-white shadow-sm ring-4 ring-blue-100/70 dark:bg-blue-500 dark:ring-blue-950/70">
                 JH
               </div>
               <div>
-                <h1 className="text-base font-semibold text-slate-900">JobHuntHQ</h1>
-                <p className="text-xs text-slate-500">Applications, emails, resumes</p>
+                <h1 className="text-base font-semibold text-slate-900 dark:text-slate-100">JobHuntHQ</h1>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Applications, emails, resumes</p>
               </div>
             </div>
           ) : null}
@@ -66,9 +66,9 @@ export default function Sidebar() {
         </div>
       </div>
 
-      <nav className="space-y-1.5 rounded-2xl border border-slate-200/80 bg-white/70 p-2 shadow-sm">
+      <nav className="space-y-1.5 rounded-2xl border border-slate-200/80 bg-white/70 p-2 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/75">
         {!collapsed ? (
-          <p className="px-2.5 pb-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+          <p className="px-2.5 pb-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
             Menu
           </p>
         ) : null}
@@ -86,8 +86,8 @@ export default function Sidebar() {
                 collapsed ? "justify-center px-0" : "gap-3"
               } ${
                 active
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "text-slate-700 hover:bg-slate-100"
+                  ? "bg-blue-600 text-white shadow-sm dark:bg-blue-500"
+                  : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
               }`}
             >
               <Icon className="h-4 w-4 shrink-0" />

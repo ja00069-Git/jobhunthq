@@ -221,17 +221,17 @@ function Card({
   const canApprove = company.trim().length > 0 && role.trim().length > 0;
 
   return (
-    <article className="rounded-[26px] border border-slate-200/80 bg-white p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-lg sm:p-5">
+    <article className="ui-surface-card p-4 transition duration-200 hover:-translate-y-0.5 hover:shadow-lg sm:p-5">
       <div className="flex flex-col gap-3.5">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-600">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-600 dark:text-sky-300">
               {formatStatus(email.status)}
             </p>
-            <h3 className="mt-2 text-lg font-semibold text-slate-900 sm:text-xl">
+            <h3 className="mt-2 text-lg font-semibold text-slate-900 dark:text-slate-100 sm:text-xl">
               {role || email.role || email.subject}
             </h3>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               {company || email.company || "Company not confirmed yet"}
             </p>
           </div>
@@ -254,46 +254,46 @@ function Card({
           </span>
         </div>
 
-        <div className="rounded-2xl bg-slate-50 p-4">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
+        <div className="ui-surface-soft p-4">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
             Message preview
           </p>
-          <p className="mt-2 text-sm font-medium text-slate-700">
+          <p className="mt-2 text-sm font-medium text-slate-700 dark:text-slate-200">
             {email.subject}
           </p>
-          <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-500">
+          <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
             {email.snippet}
           </p>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="space-y-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
               Company
             </span>
             <input
               value={company}
               onChange={(e) => setCompany(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
+              className="ui-input"
               placeholder="Company name"
             />
           </label>
 
           <label className="space-y-1.5">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
               Role
             </span>
             <input
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition focus:border-sky-500 focus:ring-4 focus:ring-sky-100"
+              className="ui-input"
               placeholder="Role title"
             />
           </label>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-slate-500">
+        <div className="flex flex-col gap-3 border-t border-slate-100 pt-4 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             {canApprove
               ? "Save this email to your applications list."
               : "Add a company and job title before saving."}

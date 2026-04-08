@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 
 import AuthProvider from "@/components/auth-provider";
 import SidebarShell from "@/components/layout/SidebarShell";
@@ -30,9 +31,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="text-slate-900">
+      <body suppressHydrationWarning className="text-slate-900 dark:text-slate-100">
+        <Script id="theme-init" strategy="beforeInteractive">
+          {`try {
+  const savedTheme = localStorage.getItem('theme');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = savedTheme ? savedTheme === 'dark' : systemPrefersDark;
+  document.documentElement.classList.toggle('dark', isDark);
+  document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+} catch {}`}
+        </Script>
+
         <AuthProvider>
           <div className="flex min-h-screen">
             <SidebarShell />

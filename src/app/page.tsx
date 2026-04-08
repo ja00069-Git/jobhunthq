@@ -84,20 +84,20 @@ export default async function DashboardPage() {
       </div>
 
       <div>
-        <section className="rounded-2xl border border-slate-200/80 bg-white p-3.5 shadow-sm sm:p-4">
+        <section className="ui-surface-card p-3.5 sm:p-4">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-lg font-semibold text-slate-900">
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
                 Recent applications
               </h2>
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-slate-500 dark:text-slate-400">
                 A quick look at your latest applications.
               </p>
             </div>
 
             <Link
               href="/applications"
-              className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:underline"
+              className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:underline dark:text-blue-300"
             >
               See all applications
               <FiArrowRight className="h-4 w-4" />
@@ -105,7 +105,7 @@ export default async function DashboardPage() {
           </div>
 
           {recentApplications.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 p-4 text-sm text-slate-500">
+            <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/80 p-4 text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-400">
               No applications yet. Add one yourself or review job emails to get started.
             </div>
           ) : (
@@ -113,14 +113,14 @@ export default async function DashboardPage() {
               {recentApplications.map((application) => (
                 <div
                   key={application.id}
-                  className="rounded-xl border border-slate-200 bg-slate-50 p-3"
+                  className="rounded-xl border border-slate-200 bg-slate-50/80 p-3 dark:border-slate-700 dark:bg-slate-800/70"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-sm font-semibold text-slate-900">
+                      <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                         {application.role}
                       </p>
-                      <p className="mt-1 text-sm text-slate-600">
+                      <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
                         {application.company}
                       </p>
                     </div>
@@ -128,7 +128,7 @@ export default async function DashboardPage() {
                       {getStatusLabel(application.status)}
                     </span>
                   </div>
-                  <p className="mt-3 text-xs text-slate-500">
+                  <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
                     {application.source || "Added manually"}
                   </p>
                 </div>
