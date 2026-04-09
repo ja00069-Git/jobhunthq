@@ -23,6 +23,8 @@ export default function ApplicationForm({
   resumes?: ResumeOption[];
 }) {
   const router = useRouter();
+  // Wait until the client has mounted before rendering the drawer so date
+  // defaults and interactive UI stay hydration-safe.
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,

@@ -38,8 +38,6 @@ const statusAliasMap: Record<string, ApplicationStatus> = {
   wishlist: "wishlist",
   applied: "applied",
   phone: "interview",
-  "phone screen": "interview",
-  "phone-screen": "interview",
   interview: "interview",
   interviewing: "interview",
   offer: "offer",

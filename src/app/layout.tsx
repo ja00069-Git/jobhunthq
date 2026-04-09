@@ -35,6 +35,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="text-slate-900 dark:text-slate-100">
+        {/* Apply the saved theme before hydration to avoid a light/dark flash. */}
         <Script id="theme-init" strategy="beforeInteractive">
           {`try {
   const savedTheme = localStorage.getItem('theme');

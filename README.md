@@ -1,75 +1,58 @@
 # JobHuntHQ
 
-JobHuntHQ is a job search tracker built with **Next.js**, **Prisma**, and **PostgreSQL**. It helps you organize applications, review job emails from Gmail, track companies, and manage resume versions in one place.
+JobHuntHQ is a job-search workspace for keeping applications, hiring emails, companies, and resumes organized in one place.
 
-## Features
+## App overview
 
-- **Dashboard** for quick job-search visibility
-- **Applications board** with Kanban-style status management
-- **Review queue** for Gmail-based job email approvals
-- **Companies page** for company-level history
-- **Resumes page** with per-resume linked application counts
-- **Light and dark mode** support
+The app is built around a simple flow:
 
-## Tech stack
+1. review incoming job-related emails
+2. save useful ones into your applications pipeline
+3. track each application across hiring stages
+4. keep the right resume linked to each submission
+5. monitor progress from a clean dashboard
 
-- Next.js 16 App Router
-- React 19
-- Prisma 7
-- PostgreSQL
-- NextAuth with Google sign-in
-- Tailwind CSS 4
+## Main features
 
-## Environment setup
+- **Dashboard** for quick search visibility and recent activity
+- **Applications board** with drag-and-drop status tracking
+- **Email review queue** for Gmail-imported job messages
+- **Companies page** to review employer history at a glance
+- **Resumes page** with linked-application counts per resume
+- **Dark mode**, responsive layout, and friendly loading/error states
 
-Copy the example environment file and fill in your values:
+## Main pages
 
-```bash
-cp .env.example .env
-```
+| Route | What it shows |
+| --- | --- |
+| `/` | Dashboard and top-level job search metrics |
+| `/applications` | Kanban board for your applications |
+| `/review` | Job email review and approval queue |
+| `/companies` | Company activity and application history |
+| `/resumes` | Resume library and usage counts |
 
-Required variables:
+## Core records
 
-- `DATABASE_URL`
-- `NEXTAUTH_URL`
-- `NEXTAUTH_SECRET`
-- `GOOGLE_CLIENT_ID`
-- `GOOGLE_CLIENT_SECRET`
+- **Application** — company, role, stage, date applied, notes, resume used
+- **ImportedEmail** — Gmail message details, preview, confidence score, review state
+- **Company** — saved employer record with related applications
+- **Resume** — resume name, file link, and linked applications
 
-## Install and run
+## Application stages
 
-```bash
-npm install
-npm run dev
-```
+- `wishlist`
+- `applied`
+- `interview`
+- `offer`
+- `rejected`
+- `withdrawn`
 
-Open `http://localhost:3000`.
+## Experience goals
 
-## Useful scripts
+JobHuntHQ is designed to feel:
 
-```bash
-npm run dev
-npm run build
-npm run start
-npm run lint
-npm run prisma:generate
-npm run db:seed
-```
-
-## Production readiness notes
-
-Before deployment, make sure:
-
-- database credentials are set correctly
-- Google OAuth redirect URLs match your deployment URL
-- `NEXTAUTH_SECRET` is set to a long random value
-- `npm run build` passes cleanly
-
-## App routes
-
-- `/` — dashboard
-- `/applications` — application tracker
-- `/review` — review Gmail job emails
-- `/companies` — company activity
-- `/resumes` — resume library
+- **clear** for non-technical users
+- **fast** for everyday tracking
+- **compact** with only what you need
+- **calm** with subtle motion and helpful fallbacks
 

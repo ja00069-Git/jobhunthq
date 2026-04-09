@@ -78,6 +78,8 @@ export default function KanbanBoard({
 
     const previousItems = items;
 
+    // Move the card immediately for a snappy feel, then roll back if the
+    // server update fails.
     setItems((prev) =>
       prev.map((item) =>
         item.id === activeId ? { ...item, status: overStatus } : item,

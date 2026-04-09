@@ -6,6 +6,8 @@ const globalForPrisma = globalThis as {
   prisma?: PrismaClient;
 };
 
+// Keep a single Prisma client during development hot reloads so we avoid
+// opening extra database connections between refreshes.
 const createPrismaClient = () => {
   const connectionString = process.env.DATABASE_URL;
 
@@ -18,6 +20,8 @@ const createPrismaClient = () => {
   });
 };
 
+// Next.js dev mode can temporarily hold onto an older generated client after
+// schema changes, so we verify the models we rely on before reusing it.
 const hasExpectedModels = (
   client: PrismaClient | undefined,
 ): client is PrismaClient => {
