@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { FiBriefcase, FiCheckCircle, FiInbox, FiMail, FiXCircle } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 
+import { getStatusLabel, normalizeApplicationStatus } from "@/lib/application-status";
+
 type ImportedEmail = {
   id: string;
   subject: string;
@@ -355,6 +357,12 @@ function getConfidenceMeta(score: number) {
 function formatStatus(status: string | null | undefined) {
   if (!status) {
     return "Needs review";
+  }
+
+  const normalizedStatus = normalizeApplicationStatus(status);
+
+  if (normalizedStatus) {
+    return getStatusLabel(normalizedStatus);
   }
 
   return status

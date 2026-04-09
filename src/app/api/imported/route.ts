@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { normalizeApplicationStatus } from "@/lib/application-status";
 import { prisma } from "@/lib/prisma";
 
 function detectImportSource(from: string) {
@@ -19,7 +20,12 @@ export async function GET() {
       orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json(data);
+    const normalizedData = data.map((email) => ({
+      ...email,
+      status: normalizeApplicationStatus(email.status) ?? null,
+    }));
+
+    return NextResponse.json(normalizedData);
   } catch (error) {
     return NextResponse.json(
       {
@@ -51,11 +57,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
+    const nextStatus = normalizeApplicationStatus(email.status) ?? "applied";
+
     const updated = await prisma.importedEmail.update({
       where: { id: body.id },
       data: {
         company: body.company?.trim() || email.company,
         role: body.role?.trim() || email.role,
+        status: nextStatus,
       },
     });
 
@@ -80,7 +89,7 @@ export async function POST(req: Request) {
         data: {
           company: companyName,
           role: updated.role || "Unknown Role",
-          status: updated.status || "applied",
+          status: nextStatus,
           source: updated.source || detectImportSource(updated.from),
           dateApplied: new Date(),
           gmailId: updated.gmailId,

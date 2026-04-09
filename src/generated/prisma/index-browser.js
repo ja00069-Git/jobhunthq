@@ -177,7 +177,6 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 exports.Status = exports.$Enums.Status = {
-  wishlist: 'wishlist',
   applied: 'applied',
   interview: 'interview',
   offer: 'offer',

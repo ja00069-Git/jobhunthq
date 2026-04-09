@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import {
   APPLICATION_STATUS_OPTIONS,
   getStatusLabel,
+  normalizeApplicationStatus,
   type ApplicationStatus,
 } from "@/lib/application-status";
 
@@ -38,6 +39,13 @@ const KANBAN_COLUMNS = APPLICATION_STATUS_OPTIONS;
 
 const statuses: string[] = KANBAN_COLUMNS.map((option) => option.value);
 
+function normalizeBoardApplications(applications: Application[]) {
+  return applications.map((application) => ({
+    ...application,
+    status: normalizeApplicationStatus(application.status) ?? "applied",
+  }));
+}
+
 export default function KanbanBoard({
   applications,
   resumes,
@@ -46,11 +54,11 @@ export default function KanbanBoard({
   resumes: ResumeOption[];
 }) {
   const router = useRouter();
-  const [items, setItems] = useState(applications);
+  const [items, setItems] = useState(() => normalizeBoardApplications(applications));
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setItems(applications);
+    setItems(normalizeBoardApplications(applications));
   }, [applications]);
 
   useEffect(() => {

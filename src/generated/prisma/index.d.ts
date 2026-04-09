@@ -39,7 +39,6 @@ export type ImportedEmail = $Result.DefaultSelection<Prisma.$ImportedEmailPayloa
  */
 export namespace $Enums {
   export const Status: {
-  wishlist: 'wishlist',
   applied: 'applied',
   interview: 'interview',
   offer: 'offer',

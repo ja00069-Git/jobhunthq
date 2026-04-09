@@ -40,7 +40,7 @@ export default async function CompaniesPage() {
         applications: {
           some: {
             status: {
-              in: ["wishlist", "applied", "interview"],
+              in: ["applied", "interview"],
             },
           },
         },

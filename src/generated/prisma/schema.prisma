@@ -1,5 +1,4 @@
 enum Status {
-  wishlist
   applied
   interview
   offer
