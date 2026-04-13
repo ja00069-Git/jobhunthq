@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="JobHuntHQ icon">
+  <defs>
+    <linearGradient id="bg" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f172a" />
+      <stop offset="1" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="accent" x1="18" y1="18" x2="46" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7dd3fc" />
+      <stop offset="1" stop-color="#22c55e" />
+    </linearGradient>
+  </defs>
+
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#bg)" />
+  <path d="M24 20.5a3.5 3.5 0 0 1 3.5-3.5h9A3.5 3.5 0 0 1 40 20.5V23h5.5A4.5 4.5 0 0 1 50 27.5v14A4.5 4.5 0 0 1 45.5 46h-27A4.5 4.5 0 0 1 14 41.5v-14A4.5 4.5 0 0 1 18.5 23H24zm3.5 0V23h9v-2.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5Z" fill="url(#accent)" />
+  <path d="M23 33.5l5.5 5.5L41 26.5" fill="none" stroke="#f8fafc" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.25" />
+</svg>

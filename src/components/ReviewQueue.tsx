@@ -23,6 +23,10 @@ type ApprovalUpdates = {
   role: string;
 };
 
+type ReviewQueueProps = {
+  pendingCount: number;
+};
+
 type ReviewCardProps = {
   email: ImportedEmail;
   onApprove: (id: string, updates: ApprovalUpdates) => Promise<void>;
@@ -31,7 +35,7 @@ type ReviewCardProps = {
   isRejecting: boolean;
 };
 
-export default function ReviewQueue() {
+export default function ReviewQueue({ pendingCount }: ReviewQueueProps) {
   const [emails, setEmails] = useState<ImportedEmail[]>([]);
   const [loading, setLoading] = useState(true);
   const [approvingId, setApprovingId] = useState<string | null>(null);
@@ -63,7 +67,7 @@ export default function ReviewQueue() {
 
   useEffect(() => {
     void loadQueue();
-  }, [loadQueue]);
+  }, [loadQueue, pendingCount]);
 
   async function approve(id: string, updates: ApprovalUpdates) {
     try {
@@ -124,29 +128,20 @@ export default function ReviewQueue() {
     }
   }
 
+  const visibleCount = loading ? pendingCount : emails.length;
+
   return (
     <div className="space-y-5">
-      <div className="ui-animate-enter flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
-            Emails to review
-          </p>
-          <h2 className="mt-1 text-2xl font-semibold text-slate-900">
-            {emails.length} email{emails.length === 1 ? "" : "s"} to review
-          </h2>
-          <p className="mt-1 text-sm text-slate-500">
-            Keep the useful job emails and remove the rest.
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => void loadQueue()}
-          disabled={loading}
-          className="ui-btn-secondary"
-        >
-          {loading ? "Refreshing..." : "Refresh"}
-        </button>
+      <div className="ui-animate-enter">
+        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+          Emails to review
+        </p>
+        <h2 className="mt-1 text-2xl font-semibold text-slate-900">
+          {visibleCount} email{visibleCount === 1 ? "" : "s"} to review
+        </h2>
+        <p className="mt-1 text-sm text-slate-500">
+          Keep the useful job emails and remove the rest.
+        </p>
       </div>
 
       {error ? (
@@ -157,7 +152,7 @@ export default function ReviewQueue() {
             onClick={() => void loadQueue()}
             className="ui-btn-secondary text-rose-700 hover:bg-rose-50"
           >
-            Retry
+            Retry load
           </button>
         </div>
       ) : null}

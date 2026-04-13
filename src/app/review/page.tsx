@@ -30,7 +30,7 @@ export default async function ReviewPage() {
         }
       />
 
-      <ReviewQueue />
+      <ReviewQueue pendingCount={pendingImports} />
     </div>
   );
 }

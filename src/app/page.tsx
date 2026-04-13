@@ -70,13 +70,13 @@ export default async function DashboardPage() {
           <>
             <Link
               href="/applications"
-              className="ui-btn-primary"
+              className="ui-btn-primary min-w-[12rem]"
             >
               Applications
             </Link>
             <Link
               href="/review"
-              className="ui-btn-secondary"
+              className="ui-btn-secondary min-w-[12rem]"
             >
               Emails to review ({pendingImports})
             </Link>

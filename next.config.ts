@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDevelopment = process.env.NODE_ENV !== "production";
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -8,11 +10,11 @@ const contentSecurityPolicy = [
   "frame-ancestors 'none'",
   "img-src 'self' data: https: blob:",
   "object-src 'none'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "connect-src 'self' https://www.googleapis.com https://oauth2.googleapis.com https://accounts.google.com",
+  `connect-src 'self' https://www.googleapis.com https://oauth2.googleapis.com https://accounts.google.com${isDevelopment ? " ws: wss:" : ""}`,
   "frame-src https://accounts.google.com",
-  process.env.NODE_ENV === "production" ? "upgrade-insecure-requests" : "",
+  !isDevelopment ? "upgrade-insecure-requests" : "",
 ]
   .filter(Boolean)
   .join("; ");
@@ -59,6 +61,7 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  devIndicators: false,
   async headers() {
     return [
       {

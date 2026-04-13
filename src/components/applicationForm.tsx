@@ -128,9 +128,9 @@ export default function ApplicationForm({
       </div>
 
       {isOpen ? (
-        <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/35 backdrop-blur-sm">
-          <div className="h-full w-full max-w-[560px] overflow-y-auto border-l border-slate-200 bg-white/95 shadow-2xl backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/95">
-            <form onSubmit={handleSubmit} className="flex min-h-full flex-col">
+        <div className="fixed inset-0 z-50 flex h-screen w-screen items-stretch justify-end bg-slate-950/45 backdrop-blur-[2px]">
+          <div className="h-screen max-h-screen w-full max-w-[560px] overflow-hidden border-l border-slate-200 bg-white/95 shadow-2xl backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/95">
+            <form onSubmit={handleSubmit} className="flex h-full min-h-0 flex-col">
               <div className="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4 dark:border-slate-800 sm:px-6">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-600 dark:text-blue-300">
@@ -154,7 +154,7 @@ export default function ApplicationForm({
                 </button>
               </div>
 
-              <div className="flex-1 space-y-4 px-5 py-4 sm:px-6">
+              <div className="flex-1 space-y-4 overflow-y-auto px-5 py-4 sm:px-6">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="space-y-1.5">
                     <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Company</span>

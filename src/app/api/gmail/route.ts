@@ -11,12 +11,19 @@ type GmailHeader = {
   value?: string;
 };
 
+type GmailMessagePart = {
+  mimeType?: string;
+  body?: {
+    data?: string;
+  };
+  parts?: GmailMessagePart[];
+  headers?: GmailHeader[];
+};
+
 type GmailMessage = {
   id?: string;
   snippet?: string;
-  payload?: {
-    headers?: GmailHeader[];
-  };
+  payload?: GmailMessagePart;
 };
 
 type GmailListResponse = {
@@ -34,15 +41,103 @@ function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 function toTitleCase(value: string) {
   return value
     .split(/\s+/)
     .map((word) =>
-      word === word.toUpperCase() && word.length > 1
-        ? word
-        : capitalize(word.toLowerCase())
+      word.replace(/[A-Za-z][A-Za-z'’-]*/g, (token) =>
+        token === token.toUpperCase() && token.length > 1
+          ? token
+          : capitalize(token.toLowerCase()),
+      ),
     )
     .join(" ");
+}
+
+const genericCompanyNames = new Set([
+  "email",
+  "gmail",
+  "google",
+  "google jobs",
+  "indeed",
+  "linkedin",
+  "workday",
+]);
+
+const roleKeywordPattern =
+  /(Engineer|Developer|Intern|Manager|Associate|Analyst|Architect|Specialist|Consultant|Administrator|Designer|Scientist|Coordinator|Technician)/i;
+
+function sanitizeCompanyName(value: string | null | undefined) {
+  const cleaned = value?.trim().replace(/\s+/g, " ").replace(/[.,;:]+$/g, "");
+
+  if (!cleaned) {
+    return "Unknown";
+  }
+
+  return genericCompanyNames.has(cleaned.toLowerCase()) ? "Unknown" : cleaned;
+}
+
+function decodeBase64Url(value: string | undefined) {
+  if (!value) {
+    return "";
+  }
+
+  const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
+  const padded = normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "=");
+
+  return Buffer.from(padded, "base64").toString("utf8");
+}
+
+function stripHtml(value: string) {
+  return value
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&#39;/gi, "'")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractPayloadText(part?: GmailMessagePart): string {
+  if (!part) {
+    return "";
+  }
+
+  const ownBody = decodeBase64Url(part.body?.data);
+  const ownText = part.mimeType === "text/html" ? stripHtml(ownBody) : ownBody;
+  const childText = (part.parts ?? []).map(extractPayloadText).filter(Boolean).join(" ");
+
+  return [ownText, childText].filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+}
+
+function buildEmailText(snippet: string, payload?: GmailMessagePart) {
+  return [snippet, extractPayloadText(payload)]
+    .filter(Boolean)
+    .join(" ")
+    .replace(/[\u200B-\u200D\uFEFF\u2060]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function cleanRoleTitle(value: string | null | undefined) {
+  const cleaned = value?.trim().replace(/\s+/g, " ").replace(/[|•·]+$/g, "");
+
+  if (!cleaned) {
+    return "Unknown Role";
+  }
+
+  return cleaned
+    .replace(/\s*[-–—]\s*[A-Z][A-Za-z ]+(?:,\s*[A-Z]{2})?$/, "")
+    .replace(/\s+at\s+[A-Z][A-Za-z0-9&.,'’\- ]+$/, "")
+    .replace(/\s*[-–—]\s*$/, "")
+    .trim();
 }
 
 /**
@@ -99,38 +194,66 @@ function parseIndeedEmail(subject: string, snippet: string) {
     ? toTitleCase(roleMatch[1])
     : "Unknown Role";
 
-  const companyMatch = snippet.match(
-    /sent to\s+([A-Z][A-Za-z0-9&.,'\- ]+?)\./i
-  );
+  const escapedRole = role !== "Unknown Role" ? escapeRegExp(role) : null;
+
+  const companyMatch =
+    snippet.match(/the following items were sent to\s+([A-Z][A-Za-z0-9&.,'’\- ]+?)(?:\.|,|$)/i) ??
+    (escapedRole
+      ? snippet.match(
+          new RegExp(
+            `${escapedRole}\\s+(?:company logo\\s+)?([A-Z][A-Za-z0-9&.,'’\\- ]+?)\\s+-\\s+[A-Z]`,
+            "i",
+          ),
+        )
+      : null) ??
+    snippet.match(
+      /application submitted\s+.+?\s+(?:company logo\s+)?([A-Z][A-Za-z0-9&.,'’\- ]+?)\s+-\s+[A-Z]/i,
+    ) ??
+    snippet.match(/sent to\s+([A-Z][A-Za-z0-9&.,'’\- ]+?)(?:\.|,|$)/i) ??
+    snippet.match(/for\s+.+?\s+at\s+([A-Z][A-Za-z0-9&.,'’\- ]+?)(?:[.,]|$)/i) ??
+    snippet.match(/with\s+([A-Z][A-Za-z0-9&.,'’\- ]+?)(?:[.,]|$)/i);
 
   return {
     role,
-    company: companyMatch?.[1] || "Unknown",
+    company: sanitizeCompanyName(companyMatch?.[1]),
   };
 }
 
 function parseLinkedInEmail(subject: string, snippet: string) {
-  const text = `${subject}\n${snippet}`;
+  const normalizedSubject = subject.replace(/\s+/g, " ").trim();
+  const text = `${subject}\n${snippet}`.replace(/\s+/g, " ").trim();
 
-  const companyMatch = text.match(/sent to\s+([A-Z][A-Za-z0-9&.,'\- ]+)/i);
+  const companyMatch =
+    normalizedSubject.match(/your application was sent to\s+([A-Z][A-Za-z0-9&.,'’\- ]+)$/i) ??
+    text.match(/your application was sent to\s+([A-Z][A-Za-z0-9&.,'’\- ]+?)(?:\.|,|$)/i) ??
+    text.match(/sent to\s+([A-Z][A-Za-z0-9&.,'’\- ]+?)(?:\.|,|$)/i);
 
-  const roleMatch = text.match(
-    /\n([A-Z][A-Za-z0-9/&+\- ]*(Engineer|Developer|Intern|Manager|Associate))\n/
+  const company = sanitizeCompanyName(companyMatch?.[1]);
+  const roleSearchText =
+    company !== "Unknown"
+      ? text
+          .split(new RegExp(`your application was sent to\\s+${escapeRegExp(company)}`, "i"))
+          .slice(1)
+          .join(" ")
+          .trim()
+      : text;
+
+  const roleMatch = roleSearchText.match(
+    /\b([A-Z][A-Za-z0-9/&+,'’\- ]{2,80}?(?:Engineer|Developer|Intern|Manager|Associate|Analyst|Architect|Specialist|Consultant|Administrator|Designer|Scientist|Coordinator|Technician))\b/i,
   );
 
   return {
-    company: companyMatch?.[1] || "Unknown",
-    role: roleMatch?.[1] || "Unknown Role",
+    company,
+    role: cleanRoleTitle(roleMatch?.[1]),
   };
 }
 
 function parseWorkdayEmail(subject: string) {
-  const roleMatch = subject.match(/applying for (.+?) at/i);
-  const companyMatch = subject.match(/at\s+([A-Z][A-Za-z0-9& ]+)/);
+  const match = subject.match(/applying for\s+(.+)\s+at\s+([A-Z][A-Za-z0-9& ]+)/i);
 
   return {
-    role: roleMatch ? toTitleCase(roleMatch[1]) : "Unknown Role",
-    company: companyMatch ? companyMatch[1].trim() : "Unknown",
+    role: match ? cleanRoleTitle(toTitleCase(match[1])) : "Unknown Role",
+    company: sanitizeCompanyName(match ? match[2].trim() : undefined),
   };
 }
 
@@ -138,28 +261,42 @@ function parseWorkdayEmail(subject: string) {
  * GENERIC FALLBACK PARSING
  */
 function extractRole(subject: string, snippet: string) {
-  const text = `${subject}\n${snippet}`;
+  const text = `${subject}\n${snippet}`.replace(/\s+/g, " ").trim();
 
-  // generic role patterns
-  const match = text.match(
-    /\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,5})\b/
-  );
+  const subjectRole =
+    subject.match(/^Indeed Application:\s*(.+)$/i)?.[1] ??
+    subject.match(/applying for\s+(.+)\s+at\s+[A-Z]/i)?.[1];
 
-  return match?.[1] || "Unknown Role";
-}
-
-function extractCompany(from: string, subject: string) {
-  // try subject first
-  const subjectMatch = subject.match(/at\s+([A-Z][A-Za-z0-9& ]+)/);
-  if (subjectMatch?.[1]) {
-    return subjectMatch[1].trim();
+  if (subjectRole) {
+    return cleanRoleTitle(toTitleCase(subjectRole));
   }
 
-  // fallback: domain
-  const match = from.match(/@([a-zA-Z0-9-]+)\.com/i);
+  const roleMatch = text.match(
+    /\b([A-Z][A-Za-z0-9/&+,'’\- ]{2,80}?(?:Engineer|Developer|Intern|Manager|Associate|Analyst|Architect|Specialist|Consultant|Administrator|Designer|Scientist|Coordinator|Technician))\b/i,
+  );
+
+  if (roleMatch?.[1] && roleKeywordPattern.test(roleMatch[1])) {
+    return cleanRoleTitle(roleMatch[1]);
+  }
+
+  return "Unknown Role";
+}
+
+function extractCompany(from: string, subject: string, snippet: string) {
+  const combinedText = `${subject}\n${snippet}`;
+
+  const subjectMatch =
+    combinedText.match(/\bat\s+([A-Z][A-Za-z0-9&.,'’\- ]+?)(?:[.,]|$)/) ??
+    combinedText.match(/sent to\s+([A-Z][A-Za-z0-9&.,'’\- ]+?)(?:[.,]|$)/i);
+
+  if (subjectMatch?.[1]) {
+    return sanitizeCompanyName(subjectMatch[1]);
+  }
+
+  const match = from.match(/@([a-zA-Z0-9-]+)\.(?:com|io|ai|co|net|org)/i);
 
   if (match) {
-    return toTitleCase(match[1].replace(/[-_]+/g, " "));
+    return sanitizeCompanyName(toTitleCase(match[1].replace(/[-_]+/g, " ")));
   }
 
   return "Unknown";
@@ -207,13 +344,29 @@ function calculateAccuracyScore({
  * STATUS
  */
 function detectStatus(text: string): Status {
-  if (text.includes("rejected") || text.includes("not moving forward"))
+  if (text.includes("rejected") || text.includes("not moving forward")) {
     return "rejected";
+  }
 
-  if (text.includes("offer")) return "offer";
-
-  if (text.includes("interview") || text.includes("phone screen"))
+  if (
+    text.includes("interview") ||
+    text.includes("phone screen") ||
+    text.includes("technical screen") ||
+    text.includes("schedule time with")
+  ) {
     return "interview";
+  }
+
+  if (
+    text.includes("offer received") ||
+    text.includes("offer letter") ||
+    text.includes("job offer") ||
+    text.includes("pleased to offer") ||
+    text.includes("would like to offer") ||
+    text.includes("extend an offer")
+  ) {
+    return "offer";
+  }
 
   return "applied";
 }
@@ -290,10 +443,11 @@ export async function GET(request: Request) {
         const subject = extractHeader(headers, "Subject");
         const from = extractHeader(headers, "From");
         const snippet = message.snippet ?? "";
+        const emailText = buildEmailText(snippet, message.payload);
 
         // 🔥 FILTERS
-        if (isJobAlert(subject, snippet)) return null;
-        if (!isRealApplicationEmail(subject, snippet)) return null;
+        if (isJobAlert(subject, emailText)) return null;
+        if (!isRealApplicationEmail(subject, emailText)) return null;
 
         const source = detectSource(from);
 
@@ -302,11 +456,11 @@ export async function GET(request: Request) {
 
         // provider parsing
         if (source === "indeed") {
-          const p = parseIndeedEmail(subject, snippet);
+          const p = parseIndeedEmail(subject, emailText);
           company = p.company;
           role = p.role;
         } else if (source === "linkedin") {
-          const p = parseLinkedInEmail(subject, snippet);
+          const p = parseLinkedInEmail(subject, emailText);
           company = p.company;
           role = p.role;
         } else if (source === "workday") {
@@ -317,11 +471,11 @@ export async function GET(request: Request) {
 
         // fallback
         if (company === "Unknown") {
-          company = extractCompany(from, subject);
+          company = extractCompany(from, subject, emailText);
         }
 
         if (role === "Unknown Role") {
-          role = extractRole(subject, snippet);
+          role = extractRole(subject, emailText);
         }
 
         const existingApp = await prisma.application.findFirst({
@@ -333,11 +487,11 @@ export async function GET(request: Request) {
 
         if (existingApp) return null;
 
-        const status = detectStatus(`${subject} ${from} ${snippet}`.toLowerCase());
+        const status = detectStatus(`${subject} ${from} ${emailText}`.toLowerCase());
         const score = calculateAccuracyScore({
           source,
           subject,
-          snippet,
+          snippet: emailText,
           company,
           role,
         });
@@ -353,7 +507,7 @@ export async function GET(request: Request) {
           update: {
             subject,
             from,
-            snippet,
+            snippet: emailText || snippet,
             company,
             role,
             source: sourceLabel,
@@ -364,7 +518,7 @@ export async function GET(request: Request) {
             gmailId: message.id,
             subject,
             from,
-            snippet,
+            snippet: emailText || snippet,
             company,
             role,
             source: sourceLabel,
