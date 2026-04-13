@@ -218,23 +218,23 @@ function Card({
   const canApprove = company.trim().length > 0 && role.trim().length > 0;
 
   return (
-    <article className="ui-surface-card ui-animate-enter ui-hover-lift p-4 sm:p-5">
+    <article className="ui-surface-card ui-animate-enter ui-hover-lift overflow-hidden p-4 sm:p-5">
       <div className="flex flex-col gap-3.5">
-        <div className="flex items-start justify-between gap-3">
-          <div>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+          <div className="min-w-0 flex-1">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-600 dark:text-sky-300">
               {formatStatus(email.status)}
             </p>
-            <h3 className="mt-2 text-lg font-semibold text-slate-900 dark:text-slate-100 sm:text-xl">
+            <h3 className="mt-2 break-words text-lg font-semibold text-slate-900 dark:text-slate-100 sm:text-xl">
               {role || email.role || email.subject}
             </h3>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            <p className="mt-1 break-words text-sm text-slate-500 dark:text-slate-400">
               {company || email.company || "Company not confirmed yet"}
             </p>
           </div>
 
           <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${confidence.className}`}
+            className={`self-start rounded-full px-3 py-1 text-xs font-semibold ${confidence.className}`}
           >
             {confidence.label} · {email.score}
           </span>
@@ -245,7 +245,7 @@ function Card({
             <FiBriefcase className="h-3.5 w-3.5" />
             {email.source || "Email"}
           </span>
-          <span className="ui-badge-neutral break-all">
+          <span className="ui-badge-neutral min-w-0 max-w-full break-all">
             <FiMail className="h-3.5 w-3.5" />
             {email.from}
           </span>
@@ -255,7 +255,7 @@ function Card({
           <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">
             Message preview
           </p>
-          <p className="mt-2 text-sm font-medium text-slate-700 dark:text-slate-200">
+          <p className="mt-2 break-words text-sm font-medium text-slate-700 dark:text-slate-200">
             {email.subject}
           </p>
           <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-500 dark:text-slate-400">

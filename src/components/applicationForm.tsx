@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { FiFileText, FiPlus, FiSave, FiX } from "react-icons/fi";
+import { createPortal } from "react-dom";
 
 import {
   APPLICATION_STATUS_OPTIONS,
@@ -19,8 +20,10 @@ type ResumeOption = {
 
 export default function ApplicationForm({
   resumes = [],
+  groupedTrigger = false,
 }: {
   resumes?: ResumeOption[];
+  groupedTrigger?: boolean;
 }) {
   const router = useRouter();
   // Wait until the client has mounted before rendering the drawer so date
@@ -106,7 +109,7 @@ export default function ApplicationForm({
 
   return (
     <>
-      <div className="flex items-center gap-2">
+      <div className={groupedTrigger ? "inline-flex items-center" : "flex items-center gap-2"}>
         <button
           type="button"
           onClick={() => {
@@ -114,23 +117,28 @@ export default function ApplicationForm({
             setErrorMessage("");
             setSuccessMessage("");
           }}
-          className="ui-btn-primary min-w-[160px]"
+          className={
+            groupedTrigger
+              ? "inline-flex min-h-10 min-w-[160px] items-center justify-center gap-2 border-l border-slate-200 bg-blue-600 px-4 text-sm font-semibold whitespace-nowrap text-white transition hover:bg-blue-500 dark:border-slate-700 dark:hover:bg-blue-400"
+              : "ui-btn-primary min-w-[160px]"
+          }
         >
           <FiPlus className="h-4 w-4" />
           Add application
         </button>
 
-        {successMessage ? (
+        {!groupedTrigger && successMessage ? (
           <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
             Saved
           </p>
         ) : null}
       </div>
 
-      {isOpen ? (
-        <div className="fixed inset-0 z-50 flex h-screen w-screen items-stretch justify-end bg-slate-950/45 backdrop-blur-[2px]">
-          <div className="h-screen max-h-screen w-full max-w-[560px] overflow-hidden border-l border-slate-200 bg-white/95 shadow-2xl backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/95">
-            <form onSubmit={handleSubmit} className="flex h-full min-h-0 flex-col">
+      {isOpen
+        ? createPortal(
+            <div className="fixed inset-0 z-50 flex h-screen w-screen items-stretch justify-end bg-slate-950/45 backdrop-blur-[2px]">
+              <div className="h-screen max-h-screen w-full max-w-[560px] overflow-hidden border-l border-slate-200 bg-white/95 shadow-2xl backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/95">
+                <form onSubmit={handleSubmit} className="flex h-full min-h-0 flex-col">
               <div className="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4 dark:border-slate-800 sm:px-6">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-blue-600 dark:text-blue-300">
@@ -270,10 +278,12 @@ export default function ApplicationForm({
                   {isSubmitting ? "Saving..." : "Save application"}
                 </button>
               </div>
-            </form>
-          </div>
-        </div>
-      ) : null}
+                </form>
+              </div>
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   );
 }

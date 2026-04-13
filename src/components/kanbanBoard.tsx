@@ -199,7 +199,7 @@ function KanbanSkeleton() {
         {KANBAN_COLUMNS.map((option) => (
           <section
             key={option.value}
-            className="flex min-h-[300px] flex-col rounded-[22px] border border-slate-200 bg-slate-50/70 p-2.5 dark:border-slate-800 dark:bg-slate-900/60"
+            className="flex h-full min-h-[300px] flex-col rounded-[22px] border border-slate-200 bg-slate-50/70 p-2.5 dark:border-slate-800 dark:bg-slate-900/60"
           >
             <div className="mb-3 flex items-center justify-between gap-2">
               <div className={`rounded-full px-3 py-1 text-sm font-semibold ${option.color}`}>

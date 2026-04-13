@@ -33,12 +33,6 @@ export default function TopBar() {
           </div>
 
           <div className="flex shrink-0 items-center gap-2 self-start sm:self-auto">
-            <Link
-              href="/privacy"
-              className="hidden text-xs font-semibold text-slate-500 underline-offset-4 transition hover:text-slate-800 hover:underline dark:text-slate-400 dark:hover:text-slate-100 md:inline-flex"
-            >
-              Privacy
-            </Link>
             <ThemeToggle />
             <AuthButton />
           </div>

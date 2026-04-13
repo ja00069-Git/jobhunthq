@@ -93,7 +93,7 @@ export default function GmailSyncButton() {
       <button
         type="button"
         onClick={() => void signIn("google", { callbackUrl: "/review" })}
-        className="ui-btn-primary"
+        className="ui-btn-primary min-w-[170px] justify-center"
       >
         Connect Gmail
       </button>
@@ -112,7 +112,7 @@ export default function GmailSyncButton() {
         type="button"
         onClick={() => void syncGmail()}
         disabled={isSyncing}
-        className="ui-btn-primary"
+        className="ui-btn-primary min-w-[170px] justify-center"
       >
         <span
           className={`inline-block h-2.5 w-2.5 rounded-full ${

@@ -59,15 +59,15 @@ export default async function ApplicationsPage() {
           { label: `${pendingImports} emails to review`, tone: "amber" },
         ]}
         actions={
-          <>
+          <div className="inline-flex overflow-hidden rounded-xl border border-slate-200 bg-white/90 shadow-sm dark:border-slate-700 dark:bg-slate-900/85">
             <Link
               href="/review"
-              className="ui-btn-secondary min-w-[160px]"
+              className="inline-flex min-h-10 min-w-[160px] items-center justify-center whitespace-nowrap px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
             >
               Review emails
             </Link>
-            <ApplicationForm resumes={resumes} />
-          </>
+            <ApplicationForm resumes={resumes} groupedTrigger />
+          </div>
         }
       />
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FiExternalLink, FiFileText, FiPlus, FiTrash2 } from "react-icons/fi";
+import { FiExternalLink, FiFileText, FiTrash2 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 
 type ResumeItem = {
@@ -176,7 +176,6 @@ export default function ResumeManager({
           disabled={isSubmitting}
           className="ui-btn-primary mt-5"
         >
-          <FiPlus className="h-4 w-4" />
           {isSubmitting ? "Saving..." : "Save resume"}
         </button>
       </form>

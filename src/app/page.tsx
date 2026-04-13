@@ -67,20 +67,20 @@ export default async function DashboardPage() {
           { label: `${resumes} resumes saved`, tone: "blue" },
         ]}
         actions={
-          <>
+          <div className="inline-flex overflow-hidden rounded-xl border border-slate-200 bg-white/90 shadow-sm dark:border-slate-700 dark:bg-slate-900/85">
             <Link
               href="/applications"
-              className="ui-btn-primary min-w-[12rem]"
+              className="inline-flex min-h-10 min-w-[140px] items-center justify-center whitespace-nowrap border-r border-slate-200 bg-blue-600 px-4 text-sm font-semibold text-white transition hover:bg-blue-500 dark:border-slate-700 dark:hover:bg-blue-400"
             >
               Applications
             </Link>
             <Link
               href="/review"
-              className="ui-btn-secondary min-w-[12rem]"
+              className="inline-flex min-h-10 min-w-[180px] items-center justify-center whitespace-nowrap px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
             >
               Emails to review ({pendingImports})
             </Link>
-          </>
+          </div>
         }
       />
 
