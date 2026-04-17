@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import type { Status } from "@/generated/prisma";
+import type { Status } from "@prisma/client";
 import { getCurrentUserRecord } from "@/lib/current-user";
 import { prisma } from "@/lib/prisma";
 import { enforceRateLimit } from "@/lib/rate-limit";
