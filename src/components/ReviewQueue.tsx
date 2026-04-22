@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { FiBriefcase, FiCheckCircle, FiInbox, FiMail, FiXCircle } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 
-import { getStatusLabel, normalizeApplicationStatus } from "@/lib/application-status";
+import { APPLICATION_STATUS_OPTIONS, getStatusLabel, normalizeApplicationStatus } from "@/lib/application-status";
 
 type ImportedEmail = {
   id: string;
@@ -21,6 +21,7 @@ type ImportedEmail = {
 type ApprovalUpdates = {
   company: string;
   role: string;
+  status: string;
 };
 
 type ReviewQueueProps = {
@@ -214,6 +215,9 @@ function Card({
 }: ReviewCardProps) {
   const [company, setCompany] = useState(email.company ?? "");
   const [role, setRole] = useState(email.role ?? "");
+  const [status, setStatus] = useState(
+    normalizeApplicationStatus(email.status) ?? "applied",
+  );
   const confidence = getConfidenceMeta(email.score);
   const canApprove = company.trim().length > 0 && role.trim().length > 0;
 
@@ -222,9 +226,17 @@ function Card({
       <div className="flex flex-col gap-3.5">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-600 dark:text-sky-300">
-              {formatStatus(email.status)}
-            </p>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="rounded-full border border-sky-200 bg-sky-50 px-3 py-0.5 text-xs font-semibold uppercase tracking-widest text-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-400 dark:border-sky-800 dark:bg-sky-950 dark:text-sky-300"
+            >
+              {APPLICATION_STATUS_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
             <h3 className="mt-2 break-words text-lg font-semibold text-slate-900 dark:text-slate-100 sm:text-xl">
               {role || email.role || email.subject}
             </h3>
@@ -289,13 +301,7 @@ function Card({
           </label>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-slate-100 pt-4 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            {canApprove
-              ? "Save this email to your applications list."
-              : "Add a company and job title before saving."}
-          </p>
-
+        <div className="flex flex-wrap justify-end gap-2 border-t border-slate-100 pt-4 dark:border-slate-800">
           <div className="flex flex-wrap gap-2">
             <button
               type="button"
@@ -313,6 +319,7 @@ function Card({
                 void onApprove(email.id, {
                   company: company.trim(),
                   role: role.trim(),
+                  status,
                 })
               }
               disabled={!canApprove || isApproving || isRejecting}

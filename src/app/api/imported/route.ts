@@ -70,6 +70,7 @@ export async function POST(req: Request) {
       id?: string;
       company?: string;
       role?: string;
+      status?: string;
     };
 
     if (!body.id) {
@@ -87,7 +88,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    const nextStatus = normalizeApplicationStatus(email.status) ?? "applied";
+    const nextStatus =
+      normalizeApplicationStatus(body.status) ??
+      normalizeApplicationStatus(email.status) ??
+      "applied";
 
     const updated = await prisma.importedEmail.update({
       where: { id: body.id },
