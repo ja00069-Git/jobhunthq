@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FiExternalLink, FiFileText, FiTrash2 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
 type ResumeItem = {
   id: string;
@@ -32,10 +33,12 @@ export default function ResumeManager({
   const [resumes, setResumes] = useState(initialResumes);
   const [name, setName] = useState("");
   const [fileUrl, setFileUrl] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -44,14 +47,47 @@ export default function ResumeManager({
     setError("");
 
     try {
+      let resolvedName = name.trim();
+      let resolvedFileUrl = fileUrl.trim();
+
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const uploadResponse = await fetch("/api/resumes/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const uploadData = (await uploadResponse.json().catch(() => null)) as
+          | { fileUrl?: string; fileName?: string; error?: string }
+          | null;
+
+        if (!uploadResponse.ok || !uploadData?.fileUrl) {
+          throw new Error(uploadData?.error || "Failed to upload file.");
+        }
+
+        resolvedFileUrl = uploadData.fileUrl;
+
+        if (!resolvedName) {
+          resolvedName = (uploadData.fileName || file.name)
+            .replace(/\.[^.]+$/, "")
+            .trim();
+        }
+      }
+
+      if (!resolvedName || !resolvedFileUrl) {
+        throw new Error("Provide a name and upload a file or paste a file URL.");
+      }
+
       const response = await fetch("/api/resumes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name,
-          fileUrl,
+          name: resolvedName,
+          fileUrl: resolvedFileUrl,
         }),
       });
 
@@ -73,6 +109,10 @@ export default function ResumeManager({
       setResumes((current) => [createdResume, ...current]);
       setName("");
       setFileUrl("");
+      setFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
       setMessage("Resume saved.");
       router.refresh();
     } catch (submitError) {
@@ -154,7 +194,23 @@ export default function ResumeManager({
               placeholder="https://drive.google.com/..."
               value={fileUrl}
               onChange={(event) => setFileUrl(event.target.value)}
-              required
+            />
+          </label>
+
+          <label className="block space-y-1.5">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Or upload file (.pdf, .doc, .docx)</span>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,.doc,.docx"
+              className="ui-input"
+              onChange={(event) => {
+                const selected = event.target.files?.[0] ?? null;
+                setFile(selected);
+                if (selected && !name.trim()) {
+                  setName(selected.name.replace(/\.[^.]+$/, ""));
+                }
+              }}
             />
           </label>
         </div>
