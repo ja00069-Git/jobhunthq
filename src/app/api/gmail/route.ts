@@ -344,15 +344,32 @@ function calculateAccuracyScore({
  * STATUS
  */
 function detectStatus(text: string): Status {
-  if (text.includes("rejected") || text.includes("not moving forward")) {
+  if (
+    text.includes("rejected") ||
+    text.includes("not moving forward") ||
+    text.includes("will not be moving") ||
+    text.includes("decided to move forward with other") ||
+    text.includes("decided not to move forward") ||
+    text.includes("not selected")
+  ) {
     return "rejected";
   }
 
   if (
-    text.includes("interview") ||
+    text.includes("invited to interview") ||
+    text.includes("schedule an interview") ||
+    text.includes("schedule a call") ||
+    text.includes("schedule time with") ||
+    text.includes("interview invitation") ||
+    text.includes("interview request") ||
+    text.includes("we'd like to interview") ||
+    text.includes("we would like to interview") ||
+    text.includes("like to schedule") ||
     text.includes("phone screen") ||
     text.includes("technical screen") ||
-    text.includes("schedule time with")
+    text.includes("please select a time") ||
+    text.includes("book a time") ||
+    text.includes("pick a time")
   ) {
     return "interview";
   }
