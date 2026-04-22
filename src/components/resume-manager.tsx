@@ -24,6 +24,10 @@ function formatResumeDate(value: string) {
   return resumeDateFormatter.format(new Date(value));
 }
 
+function isBlobHostedUrl(value: string) {
+  return value.includes(".blob.vercel-storage.com/");
+}
+
 export default function ResumeManager({
   initialResumes,
 }: {
@@ -290,7 +294,11 @@ export default function ResumeManager({
                 </div>
 
                 <a
-                  href={resume.fileUrl}
+                  href={
+                    isBlobHostedUrl(resume.fileUrl)
+                      ? `/api/resumes/${resume.id}/download`
+                      : resume.fileUrl
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:underline"
