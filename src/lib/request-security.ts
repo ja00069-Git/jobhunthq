@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 
 export function validateTrustedOrigin(request: Request) {
+  const isSafeMethod = ["GET", "HEAD", "OPTIONS"].includes(request.method);
   const origin = request.headers.get("origin");
 
   if (!origin) {
-    return process.env.NODE_ENV === "production"
+    return process.env.NODE_ENV === "production" && !isSafeMethod
       ? NextResponse.json({ error: "Invalid origin." }, { status: 403 })
       : null;
   }
