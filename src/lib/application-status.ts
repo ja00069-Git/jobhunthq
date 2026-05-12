@@ -24,6 +24,11 @@ export const APPLICATION_STATUS_OPTIONS = [
     label: "Withdrawn",
     color: "bg-zinc-200 text-zinc-700",
   },
+  {
+    value: "ghosted",
+    label: "Ghosted",
+    color: "bg-slate-100 text-slate-700",
+  },
 ] as const;
 
 export type ApplicationStatus =

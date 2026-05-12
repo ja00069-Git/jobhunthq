@@ -65,7 +65,7 @@ export default async function DashboardPage() {
   const total = applications.length;
   const active = applications.filter(
     (application) =>
-      !["offer", "rejected", "withdrawn"].includes(application.status),
+      !["offer", "rejected", "withdrawn", "ghosted"].includes(application.status),
   ).length;
   const interviews = applications.filter(
     (application) => application.status === "interview",

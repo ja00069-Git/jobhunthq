@@ -1,0 +1,191 @@
+
+> jobseekershub@0.1.0 dev
+> next dev --webpack
+
+▲ Next.js 16.2.3 (webpack)
+- Local:         http://localhost:3000
+- Network:       http://10.0.0.77:3000
+- Environments: .env.local, .env
+✓ Ready in 369ms
+
+ GET /review 200 in 3.3s (next.js: 2.0s, application-code: 1223ms)
+ GET /review 200 in 3.5s (next.js: 2.0s, application-code: 1503ms)
+⚠ ./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@prisma/instrumentation/dist/index.mjs
+./node_modules/@sentry/node/build/esm/integrations/tracing/prisma.js
+./node_modules/@sentry/node/build/esm/index.js
+./src/lib/server-monitoring.ts
+./src/lib/api-error.ts
+./src/app/api/imported/route.ts
+[api:imports.list]  Error [PrismaClientKnownRequestError]: 
+Invalid `prisma.importedEmail.findMany()` invocation:
+
+
+The column `ImportedEmail.appliedAt` does not exist in the current database.
+    at async GET (src/app/api/imported/route.ts:36:18)
+  34 |
+  35 |   try {
+> 36 |     const data = await prisma.importedEmail.findMany({
+     |                  ^
+  37 |       where: {
+  38 |         reviewed: false,
+  39 |         ownerId: currentUser.user.id, {
+  code: 'P2022',
+  meta: { modelName: 'ImportedEmail', column: 'ImportedEmail.appliedAt' },
+  clientVersion: '6.19.3'
+}
+ GET /api/imported 409 in 2.1s (next.js: 1734ms, application-code: 334ms)
+ GET /api/auth/session 200 in 1607ms (next.js: 1592ms, application-code: 15ms)
+ GET /api/auth/session 200 in 2.4s (next.js: 2.3s, application-code: 16ms)
+⚠ ./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@prisma/instrumentation/dist/index.mjs
+./node_modules/@sentry/node/build/esm/integrations/tracing/prisma.js
+./node_modules/@sentry/node/build/esm/index.js
+./src/lib/server-monitoring.ts
+./src/lib/api-error.ts
+./src/app/api/imported/route.ts
+⚠ ./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@prisma/instrumentation/dist/index.mjs
+./node_modules/@sentry/node/build/esm/integrations/tracing/prisma.js
+./node_modules/@sentry/node/build/esm/index.js
+./src/lib/server-monitoring.ts
+./src/lib/api-error.ts
+./src/app/api/imported/route.ts
+○ Compiling /api/gmail ...
+ GET /api/gmail 502 in 876ms (next.js: 686ms, application-code: 190ms)
+[api:imports.list]  Error [PrismaClientKnownRequestError]: 
+Invalid `prisma.importedEmail.findMany()` invocation:
+
+
+The column `ImportedEmail.appliedAt` does not exist in the current database.
+    at async GET (src/app/api/imported/route.ts:36:18)
+  34 |
+  35 |   try {
+> 36 |     const data = await prisma.importedEmail.findMany({
+     |                  ^
+  37 |       where: {
+  38 |         reviewed: false,
+  39 |         ownerId: currentUser.user.id, {
+  code: 'P2022',
+  meta: { modelName: 'ImportedEmail', column: 'ImportedEmail.appliedAt' },
+  clientVersion: '6.19.3'
+}
+ GET /api/imported 409 in 1283ms (next.js: 686ms, application-code: 598ms)
+ GET /api/gmail 200 in 2.0s (next.js: 702ms, application-code: 1312ms)
+ GET /review 200 in 193ms (next.js: 35ms, application-code: 158ms)
+⚠ ./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@prisma/instrumentation/dist/index.mjs
+./node_modules/@sentry/node/build/esm/integrations/tracing/prisma.js
+./node_modules/@sentry/node/build/esm/index.js
+./src/lib/server-monitoring.ts
+./src/lib/api-error.ts
+./src/app/api/imported/route.ts
+⚠ ./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@prisma/instrumentation/dist/index.mjs
+./node_modules/@sentry/node/build/esm/integrations/tracing/prisma.js
+./node_modules/@sentry/node/build/esm/index.js
+./src/lib/server-monitoring.ts
+./src/lib/api-error.ts
+./src/app/api/health/route.ts
+ GET /api/health 200 in 529ms (next.js: 409ms, application-code: 120ms)
+ GET /review 200 in 311ms (next.js: 39ms, application-code: 272ms)
+⚠ ./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@prisma/instrumentation/dist/index.mjs
+./node_modules/@sentry/node/build/esm/integrations/tracing/prisma.js
+./node_modules/@sentry/node/build/esm/index.js
+./src/lib/server-monitoring.ts
+./src/lib/api-error.ts
+./src/app/api/health/route.ts
+ GET /review 200 in 256ms (next.js: 9ms, application-code: 248ms)
+⚠ ./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@prisma/instrumentation/dist/index.mjs
+./node_modules/@sentry/node/build/esm/integrations/tracing/prisma.js
+./node_modules/@sentry/node/build/esm/index.js
+./src/lib/server-monitoring.ts
+./src/lib/api-error.ts
+./src/app/api/health/route.ts
+ GET /api/auth/session 200 in 861ms (next.js: 839ms, application-code: 22ms)
+⚠ ./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@prisma/instrumentation/dist/index.mjs
+./node_modules/@sentry/node/build/esm/integrations/tracing/prisma.js
+./node_modules/@sentry/node/build/esm/index.js
+./src/lib/server-monitoring.ts
+./src/lib/api-error.ts
+./src/app/api/health/route.ts
+ GET /api/imported 200 in 1053ms (next.js: 882ms, application-code: 171ms)
+⚠ ./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/@prisma/instrumentation/dist/index.mjs
+./node_modules/@sentry/node/build/esm/integrations/tracing/prisma.js
+./node_modules/@sentry/node/build/esm/index.js
+./src/lib/server-monitoring.ts
+./src/lib/api-error.ts
+./src/app/api/health/route.ts
+ GET /api/gmail 200 in 1395ms (next.js: 414ms, application-code: 980ms)
+ GET /api/auth/session 200 in 9ms (next.js: 3ms, application-code: 6ms)
+ GET /review 200 in 148ms (next.js: 49ms, application-code: 99ms)
+ GET /api/gmail 502 in 124ms (next.js: 969µs, application-code: 123ms)
+ GET /api/imported 200 in 189ms (next.js: 4ms, application-code: 185ms)
+[?25h

@@ -4,6 +4,7 @@ enum Status {
   offer
   rejected
   withdrawn
+  ghosted
 }
 
 generator client {

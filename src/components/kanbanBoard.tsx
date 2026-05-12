@@ -9,6 +9,7 @@ import {
 } from "@dnd-kit/core";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FiTrash2 } from "react-icons/fi";
 
 import {
   APPLICATION_STATUS_OPTIONS,
@@ -170,6 +171,33 @@ export default function KanbanBoard({
     }
   }
 
+  async function handleDelete(id: string) {
+    const previousItems = items;
+    setErrorMessage("");
+
+    setItems((prev) => prev.filter((item) => item.id !== id));
+
+    try {
+      const response = await fetch("/api/applications", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      if (!response.ok) {
+        const payload = await readApiJson<ApiErrorPayload>(response);
+        throw new Error(getFriendlyApiErrorMessage(payload, "Failed to delete application."));
+      }
+
+      router.refresh();
+    } catch (error) {
+      setItems(previousItems);
+      setErrorMessage(error instanceof Error ? error.message : "Failed to delete application.");
+    }
+  }
+
   if (!isMounted) {
     return <KanbanSkeleton />;
   }
@@ -190,6 +218,7 @@ export default function KanbanBoard({
               draggable={isMounted}
               resumes={resumes}
               onResumeChange={handleResumeChange}
+              onDelete={handleDelete}
             />
           ))}
         </div>
@@ -252,6 +281,7 @@ function Column({
   draggable,
   resumes,
   onResumeChange,
+  onDelete,
 }: {
   status: string;
   items: Application[];
@@ -259,6 +289,7 @@ function Column({
   draggable: boolean;
   resumes: ResumeOption[];
   onResumeChange: (id: string, resumeId: string) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }) {
   const { setNodeRef, isOver } = useDroppable({
     id: status,
@@ -295,6 +326,7 @@ function Column({
               draggable={draggable}
               resumes={resumes}
               onResumeChange={onResumeChange}
+              onDelete={onDelete}
             />
           ))
         ) : (
@@ -312,15 +344,17 @@ function DraggableCard({
   draggable,
   resumes,
   onResumeChange,
+  onDelete,
 }: {
   app: Application;
   draggable: boolean;
   resumes: ResumeOption[];
   onResumeChange: (id: string, resumeId: string) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }) {
   if (!draggable) {
     return (
-      <StaticCard app={app} resumes={resumes} onResumeChange={onResumeChange} />
+      <StaticCard app={app} resumes={resumes} onResumeChange={onResumeChange} onDelete={onDelete} />
     );
   }
 
@@ -329,6 +363,7 @@ function DraggableCard({
       app={app}
       resumes={resumes}
       onResumeChange={onResumeChange}
+      onDelete={onDelete}
     />
   );
 }
@@ -337,14 +372,16 @@ function StaticCard({
   app,
   resumes,
   onResumeChange,
+  onDelete,
 }: {
   app: Application;
   resumes: ResumeOption[];
   onResumeChange: (id: string, resumeId: string) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-700 dark:bg-slate-900/80">
-      <CardContent app={app} resumes={resumes} onResumeChange={onResumeChange} />
+      <CardContent app={app} resumes={resumes} onResumeChange={onResumeChange} onDelete={onDelete} />
     </div>
   );
 }
@@ -353,10 +390,12 @@ function InteractiveCard({
   app,
   resumes,
   onResumeChange,
+  onDelete,
 }: {
   app: Application;
   resumes: ResumeOption[];
   onResumeChange: (id: string, resumeId: string) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -379,7 +418,7 @@ function InteractiveCard({
         isDragging ? "cursor-grabbing opacity-80 shadow-lg" : "cursor-grab"
       }`}
     >
-      <CardContent app={app} resumes={resumes} onResumeChange={onResumeChange} />
+      <CardContent app={app} resumes={resumes} onResumeChange={onResumeChange} onDelete={onDelete} />
     </div>
   );
 }
@@ -388,23 +427,43 @@ function CardContent({
   app,
   resumes,
   onResumeChange,
+  onDelete,
 }: {
   app: Application;
   resumes: ResumeOption[];
   onResumeChange: (id: string, resumeId: string) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }) {
   return (
     <>
-      <div className="min-w-0 space-y-1">
-        <p className="line-clamp-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
-          {app.role}
-        </p>
-        <p className="text-sm text-slate-600 dark:text-slate-300">{app.company}</p>
-        {app.source ? (
-          <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
-            {app.source}
+      <div className="flex items-start justify-between gap-2">
+        <div className="min-w-0 flex-1 space-y-1">
+          <p className="line-clamp-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+            {app.role}
           </p>
-        ) : null}
+          <p className="text-sm text-slate-600 dark:text-slate-300">{app.company}</p>
+          {app.source ? (
+            <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+              {app.source}
+            </p>
+          ) : null}
+        </div>
+        <button
+          type="button"
+          onPointerDown={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            void onDelete(app.id);
+          }}
+          className="inline-flex items-center justify-center rounded p-1 text-slate-400 transition hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-950/40 dark:hover:text-red-400"
+          aria-label="Delete application"
+        >
+          <FiTrash2 className="h-4 w-4" />
+        </button>
       </div>
 
       <div className="mt-2.5" onPointerDownCapture={(event) => event.stopPropagation()}>

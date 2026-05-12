@@ -159,7 +159,9 @@ export default function ReviewQueue({ pendingCount }: ReviewQueueProps) {
           {visibleCount} email{visibleCount === 1 ? "" : "s"} to review
         </h2>
         <p className="mt-1 text-sm text-slate-500">
-          Keep the useful job emails and remove the rest.
+          {visibleCount === 0 && !loading
+            ? "New job emails will appear here after Gmail is checked."
+            : "Keep the useful job emails and remove the rest."}
         </p>
       </div>
 
