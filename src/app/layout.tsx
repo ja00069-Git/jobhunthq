@@ -5,6 +5,7 @@ import AuthProvider from "@/components/auth-provider";
 import SidebarShell from "@/components/layout/SidebarShell";
 import ThemeHydrator from "@/components/layout/ThemeHydrator";
 import TopBar from "@/components/layout/TopBar";
+import LegalFooter from "../components/layout/LegalFooter";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -48,6 +49,8 @@ export default function RootLayout({
               <main className="flex-1 overflow-x-clip overflow-y-auto px-3 py-2.5 sm:px-4 sm:py-4 lg:px-5 lg:py-5">
                 {children}
               </main>
+
+              <LegalFooter />
             </div>
           </div>
         </AuthProvider>

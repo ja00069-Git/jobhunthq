@@ -8,7 +8,8 @@ import Sidebar from "./Sidebar";
 export default function SidebarShell() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const isPublicRoute = pathname === "/" || pathname === "/auth" || pathname === "/privacy";
+  const isPublicRoute =
+    pathname === "/" || pathname === "/auth" || pathname === "/privacy" || pathname === "/terms";
 
   if (isPublicRoute && status === "loading") {
     return null;

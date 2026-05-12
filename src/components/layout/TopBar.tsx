@@ -20,7 +20,8 @@ const mobileLinks = [
 export default function TopBar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const isPublicRoute = pathname === "/" || pathname === "/auth" || pathname === "/privacy";
+  const isPublicRoute =
+    pathname === "/" || pathname === "/auth" || pathname === "/privacy" || pathname === "/terms";
 
   if (isPublicRoute && status === "loading") {
     return null;

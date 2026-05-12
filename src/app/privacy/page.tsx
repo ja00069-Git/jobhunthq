@@ -15,65 +15,62 @@ export default function PrivacyPage() {
         <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-100">
           Privacy Policy
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">Effective date: April 13, 2026</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Effective date: April 23, 2026</p>
       </header>
 
       <article className="ui-surface-card space-y-5 p-5 text-sm leading-6 text-slate-700 dark:text-slate-300 sm:p-6">
         <p>
-          Job Seekers Hub helps you organize job applications, resumes, companies, and job-related email imports.
-          This policy explains what we collect, how we use it, and your choices.
+          This page explains what data we collect, why we collect it, and what choices you have.
         </p>
 
         <section className="space-y-2">
           <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">1. Information We Collect</h2>
           <ul className="list-disc space-y-1 pl-5">
-            <li>Account data such as email, name, and profile image from your sign-in provider</li>
-            <li>Workspace data such as applications, resumes, companies, and review records</li>
-            <li>OAuth data required for Google sign-in and Gmail sync</li>
-            <li>Operational telemetry such as request and error logs for security and reliability</li>
+            <li>Your basic account info from sign-in (name, email, profile photo)</li>
+            <li>The data you add in the app (applications, companies, resumes, review records)</li>
+            <li>Google sign-in and Gmail sync tokens needed for features you turn on</li>
+            <li>Basic technical logs to keep the app secure and working</li>
           </ul>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">2. How We Use Data</h2>
           <ul className="list-disc space-y-1 pl-5">
-            <li>Authenticate users and protect account access</li>
-            <li>Provide core tracking and review features</li>
-            <li>Process Gmail imports when you initiate sync</li>
-            <li>Operate, secure, and improve service quality</li>
+            <li>Run your account and keep your data available</li>
+            <li>Power the app features you use</li>
+            <li>Import Gmail messages only when you request a sync</li>
+            <li>Find bugs, fix issues, and improve reliability</li>
           </ul>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">3. Google API Data</h2>
           <p>
-            Gmail data is only used for your review workflow. We do not sell Google user data, we do not use
-            Gmail data for advertising, and we follow Google API Services User Data Policy including Limited Use
-            requirements.
+            We only use Gmail data to run your review workflow. We do not sell Google data and we do not use it for
+            ads. We follow Google API Services User Data Policy, including Limited Use rules.
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">4. Sharing and Retention</h2>
           <p>
-            We do not sell personal information. Data may be shared with contracted infrastructure providers,
-            or when required by law or to protect rights and safety. Data is retained while needed to provide
-            the service and for required legal and security obligations.
+            We do not sell your personal data. We may share data with trusted service providers that help us run the
+            app, or when required by law. We keep data as long as needed to provide the service and meet legal or
+            security needs.
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">5. Your Rights</h2>
           <p>
-            Depending on your location, you may have rights to access, correct, delete, restrict, or export your
-            personal data.
+            Depending on where you live, you may have rights to access, correct, delete, limit, or export your data.
           </p>
         </section>
 
         <section className="space-y-2">
           <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">6. Contact</h2>
           <p>
-            Privacy requests: privacy@jobseekershub.com
+            Privacy inquiries: privacy@jobseekershub.com
             <br />
             Company: Job Seekers Hub
           </p>
