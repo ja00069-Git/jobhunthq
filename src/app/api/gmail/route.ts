@@ -411,10 +411,12 @@ function detectStatus(text: string): Status {
   if (
     text.includes("offer received") ||
     text.includes("offer letter") ||
-    text.includes("job offer") ||
+    text.includes("offer of employment") ||
     text.includes("pleased to offer") ||
-    text.includes("would like to offer") ||
-    text.includes("extend an offer")
+    text.includes("we are pleased to offer") ||
+    text.includes("delighted to offer") ||
+    text.includes("extend an offer") ||
+    text.includes("formal offer")
   ) {
     return "offer";
   }
